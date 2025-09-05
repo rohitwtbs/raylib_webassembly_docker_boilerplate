@@ -8,4 +8,12 @@ services:
       - ./game:/src/game
     working_dir: /src
     command: >
-      sh -c "em++ /src/game/main.cpp -I/src/raylib/src -L/src/raylib/build/raylib -lraylib -o /src/game/dist/index.html -s USE_GLFW=3 -s ASYNCIFY -s WASM=1 -O2"
+      sh -c "mkdir -p /src/game/dist && em++ /src/game/main.cpp -I/src/raylib/src -L/src/raylib/build/raylib -lraylib -o /src/game/dist/index.html -s USE_GLFW=3 -s ASYNCIFY -s WASM=1 -O2"
+  web:
+    image: python:3.11-slim
+    working_dir: /src/game/dist
+    volumes:
+      - ./game/dist:/src/game/dist
+    ports:
+      - "8080:8080"
+    command: python -m http.server 8080
