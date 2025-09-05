@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  raylib-wasm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./game:/src/game
+    working_dir: /src
+    command: >
+      sh -c "em++ /src/game/main.cpp -I/src/raylib/src -L/src/raylib/build/raylib -lraylib -o /src/game/dist/index.html -s USE_GLFW=3 -s ASYNCIFY -s WASM=1 -O2"
